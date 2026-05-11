@@ -1,0 +1,372 @@
+Slip 13
+Develop a Java-based library management application that demonstrates OOP principles and uses exception handling to handle cases like issuing books, returning books, etc.
+OR
+Write a program to design an admission enquiry form using Swing.
+
+
+Q1
+
+import java.util.Scanner;
+
+// Custom Exception
+class BookException extends Exception {
+
+    BookException(String message) {
+
+        super(message);
+    }
+}
+
+// Book Class
+class Book {
+
+    int bookId;
+    String title;
+    boolean isIssued;
+
+    // Constructor
+    Book(int bookId, String title) {
+
+        this.bookId = bookId;
+        this.title = title;
+        this.isIssued = false;
+    }
+
+    // Issue Book
+    void issueBook() throws BookException {
+
+        if (isIssued) {
+
+            throw new BookException("Book Already Issued");
+
+        } else {
+
+            isIssued = true;
+
+            System.out.println(title + " Book Issued Successfully");
+        }
+    }
+
+    // Return Book
+    void returnBook() throws BookException {
+
+        if (!isIssued) {
+
+            throw new BookException("Book is Not Issued");
+
+        } else {
+
+            isIssued = false;
+
+            System.out.println(title + " Book Returned Successfully");
+        }
+    }
+
+    // Display Book
+    void displayBook() {
+
+        System.out.println("\nBook ID: " + bookId);
+        System.out.println("Book Title: " + title);
+
+        if (isIssued) {
+
+            System.out.println("Status: Issued");
+
+        } else {
+
+            System.out.println("Status: Available");
+        }
+    }
+}
+
+// Main Class
+public class LibraryManagement {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Create Book
+        Book b1 = new Book(101, "Java Programming");
+
+        b1.displayBook();
+
+        try {
+
+            // Issue Book
+            System.out.println("\nIssuing Book");
+
+            b1.issueBook();
+
+            // Issue Again
+            System.out.println("\nIssuing Again");
+
+            b1.issueBook();
+
+        } catch (BookException e) {
+
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+        try {
+
+            // Return Book
+            System.out.println("\nReturning Book");
+
+            b1.returnBook();
+
+        } catch (BookException e) {
+
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+        b1.displayBook();
+
+        sc.close();
+    }
+}
+
+
+
+user karun deta sangitle tar 
+import java.util.Scanner;
+
+// Custom Exception
+class BookException extends Exception {
+
+    BookException(String message) {
+
+        super(message);
+    }
+}
+
+// Book Class
+class Book {
+
+    // Encapsulation
+    private int bookId;
+    private String title;
+    private boolean isIssued;
+
+    // Constructor
+    Book(int bookId, String title) {
+
+        this.bookId = bookId;
+        this.title = title;
+        this.isIssued = false;
+    }
+
+    // Issue Book
+    void issueBook() throws BookException {
+
+        if (isIssued) {
+
+            throw new BookException("Book Already Issued");
+
+        } else {
+
+            isIssued = true;
+
+            System.out.println(title + " Book Issued Successfully");
+        }
+    }
+
+    // Return Book
+    void returnBook() throws BookException {
+
+        if (!isIssued) {
+
+            throw new BookException("Book is Not Issued");
+
+        } else {
+
+            isIssued = false;
+
+            System.out.println(title + " Book Returned Successfully");
+        }
+    }
+
+    // Display Book Details
+    void displayBook() {
+
+        System.out.println("\nBook ID: " + bookId);
+        System.out.println("Book Title: " + title);
+
+        if (isIssued) {
+
+            System.out.println("Status: Issued");
+
+        } else {
+
+            System.out.println("Status: Available");
+        }
+    }
+}
+
+// Main Class
+public class LibraryManagement {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // User Input
+        System.out.println("Enter Book ID:");
+        int id = sc.nextInt();
+
+        sc.nextLine();
+
+        System.out.println("Enter Book Title:");
+        String title = sc.nextLine();
+
+        // Create Book Object
+        Book b1 = new Book(id, title);
+
+        // Display Book
+        b1.displayBook();
+
+        // Menu
+        System.out.println("\n1. Issue Book");
+        System.out.println("2. Return Book");
+
+        System.out.println("Enter Your Choice:");
+        int choice = sc.nextInt();
+
+        try {
+
+            if (choice == 1) {
+
+                b1.issueBook();
+
+            } else if (choice == 2) {
+
+                b1.returnBook();
+
+            } else {
+
+                System.out.println("Invalid Choice");
+            }
+
+        } catch (BookException e) {
+
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+        // Final Status
+        b1.displayBook();
+
+        sc.close();
+    }
+}
+
+
+Q2
+
+import javax.swing.*;
+import java.awt.event.*;
+
+// Main Class
+public class AdmissionForm extends JFrame
+        implements ActionListener {
+
+    // Components
+    JLabel l1, l2, l3, l4;
+
+    JTextField t1, t2, t3;
+
+    JButton b1;
+
+    // Constructor
+    AdmissionForm() {
+
+        // Labels
+        l1 = new JLabel("Admission Enquiry Form");
+
+        l2 = new JLabel("Student Name:");
+
+        l3 = new JLabel("Email:");
+
+        l4 = new JLabel("Course:");
+
+        // Text Fields
+        t1 = new JTextField();
+
+        t2 = new JTextField();
+
+        t3 = new JTextField();
+
+        // Button
+        b1 = new JButton("Submit");
+
+        // Set Bounds
+        l1.setBounds(100, 20, 200, 30);
+
+        l2.setBounds(50, 80, 100, 30);
+
+        l3.setBounds(50, 130, 100, 30);
+
+        l4.setBounds(50, 180, 100, 30);
+
+        t1.setBounds(160, 80, 150, 30);
+
+        t2.setBounds(160, 130, 150, 30);
+
+        t3.setBounds(160, 180, 150, 30);
+
+        b1.setBounds(130, 240, 100, 40);
+
+        // Add Components
+        add(l1);
+
+        add(l2);
+
+        add(l3);
+
+        add(l4);
+
+        add(t1);
+
+        add(t2);
+
+        add(t3);
+
+        add(b1);
+
+        // Action Listener
+        b1.addActionListener(this);
+
+        // Frame Settings
+        setTitle("Admission Form");
+
+        setSize(400, 350);
+
+        setLayout(null);
+
+        setVisible(true);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    // Button Action
+    public void actionPerformed(ActionEvent e) {
+
+        String name = t1.getText();
+
+        String email = t2.getText();
+
+        String course = t3.getText();
+
+        JOptionPane.showMessageDialog(this,
+                "Admission Enquiry Submitted Successfully\n"
+                        + "Name: " + name
+                        + "\nEmail: " + email
+                        + "\nCourse: " + course);
+    }
+
+    // Main Method
+    public static void main(String[] args) {
+
+        new AdmissionForm();
+    }
+}
+

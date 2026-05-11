@@ -1,0 +1,163 @@
+Slip 20
+Implement a Java program to manage bank accounts using object-oriented programming (OOP) concepts like classes, inheritance, encapsulation, and polymorphism. Include features like account creation, deposit, withdrawal, and balance inquiry.
+OR
+Write a program of servlet to demonstrate GET and POST Methods with suitable example using simulation.
+
+
+
+Q1
+
+
+
+import java.util.Scanner;
+
+// Base Class
+class BankAccount {
+
+    // Encapsulation
+    private int accountNumber;
+    private String name;
+    protected double balance;
+
+    // Constructor
+    BankAccount(int accountNumber,
+                String name,
+                double balance) {
+
+        this.accountNumber = accountNumber;
+        this.name = name;
+        this.balance = balance;
+    }
+
+    // Deposit Method
+    void deposit(double amount) {
+
+        balance = balance + amount;
+
+        System.out.println("Amount Deposited: " + amount);
+    }
+
+    // Withdraw Method
+    void withdraw(double amount) {
+
+        if (balance >= amount) {
+
+            balance = balance - amount;
+
+            System.out.println("Amount Withdrawn: " + amount);
+
+        } else {
+
+            System.out.println("Insufficient Balance");
+        }
+    }
+
+    // Balance Inquiry
+    void displayBalance() {
+
+        System.out.println("Current Balance: " + balance);
+    }
+
+    // Display Account Details
+    void displayAccount() {
+
+        System.out.println("\nAccount Number: " + accountNumber);
+        System.out.println("Account Holder Name: " + name);
+
+        displayBalance();
+    }
+}
+
+// Savings Account
+class SavingsAccount extends BankAccount {
+
+    SavingsAccount(int accountNumber,
+                   String name,
+                   double balance) {
+
+        super(accountNumber, name, balance);
+    }
+
+    // Polymorphism
+    @Override
+    void withdraw(double amount) {
+
+        if (balance - amount >= 500) {
+
+            balance = balance - amount;
+
+            System.out.println("Withdrawn from Savings: " + amount);
+
+        } else {
+
+            System.out.println("Minimum Balance Required");
+        }
+    }
+}
+
+// Current Account
+class CurrentAccount extends BankAccount {
+
+    CurrentAccount(int accountNumber,
+                   String name,
+                   double balance) {
+
+        super(accountNumber, name, balance);
+    }
+
+    @Override
+    void withdraw(double amount) {
+
+        balance = balance - amount;
+
+        System.out.println("Withdrawn from Current: " + amount);
+    }
+}
+
+// Main Class
+public class BankManagement {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Input Details
+        System.out.println("Enter Account Number:");
+        int accNo = sc.nextInt();
+
+        sc.nextLine();
+
+        System.out.println("Enter Account Holder Name:");
+        String name = sc.nextLine();
+
+        System.out.println("Enter Initial Balance:");
+        double balance = sc.nextDouble();
+
+        // Create Savings Account
+        SavingsAccount s1 =
+                new SavingsAccount(accNo,
+                        name,
+                        balance);
+
+        // Display Details
+        s1.displayAccount();
+
+        // Deposit
+        System.out.println("\nEnter Deposit Amount:");
+        double depositAmount = sc.nextDouble();
+
+        s1.deposit(depositAmount);
+
+        s1.displayBalance();
+
+        // Withdraw
+        System.out.println("\nEnter Withdraw Amount:");
+        double withdrawAmount = sc.nextDouble();
+
+        s1.withdraw(withdrawAmount);
+
+        s1.displayBalance();
+
+        sc.close();
+    }
+}

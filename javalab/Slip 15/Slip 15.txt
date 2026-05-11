@@ -1,0 +1,189 @@
+Slip 15
+Implement a Java Program for multithreading (Synchronization): Create thread for Withdraw & Deposit tasks for Bank Account, display the current balance also.
+OR
+Write a program to demonstrate how the process tasks asynchronously in a Spring Boot application.
+
+
+
+Q1
+
+
+import java.util.Scanner;
+class BankAccount {
+
+    int balance;
+
+    // Constructor
+    BankAccount(int balance) {
+
+        this.balance = balance;
+    }
+
+    // Synchronized Deposit Method
+    synchronized void deposit(int amount) {
+
+        balance = balance + amount;
+
+        System.out.println("\nDeposited Amount: " + amount);
+
+        System.out.println("Current Balance: " + balance);
+    }
+
+    // Synchronized Withdraw Method
+    synchronized void withdraw(int amount) {
+
+        if (balance >= amount) {
+
+            balance = balance - amount;
+
+            System.out.println("\nWithdrawn Amount: " + amount);
+
+            System.out.println("Current Balance: " + balance);
+
+        } else {
+
+            System.out.println("\nInsufficient Balance");
+        }
+    }
+}
+
+// Deposit Thread
+class DepositThread extends Thread {
+
+    BankAccount b;
+    int amount;
+
+    DepositThread(BankAccount b, int amount) {
+
+        this.b = b;
+        this.amount = amount;
+    }
+
+    public void run() {
+
+        b.deposit(amount);
+    }
+}
+
+// Withdraw Thread
+class WithdrawThread extends Thread {
+
+    BankAccount b;
+    int amount;
+
+    WithdrawThread(BankAccount b, int amount) {
+
+        this.b = b;
+        this.amount = amount;
+    }
+
+    public void run() {
+
+        b.withdraw(amount);
+    }
+}
+
+// Main Class
+public class BankSystem {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // User Input
+        System.out.println("Enter Initial Balance:");
+        int balance = sc.nextInt();
+
+        BankAccount b = new BankAccount(balance);
+
+        System.out.println("Enter Deposit Amount:");
+        int depositAmount = sc.nextInt();
+
+        System.out.println("Enter Withdraw Amount:");
+        int withdrawAmount = sc.nextInt();
+
+        // Create Threads
+        DepositThread d =
+                new DepositThread(b, depositAmount);
+
+        WithdrawThread w =
+                new WithdrawThread(b, withdrawAmount);
+
+        // Start Threads
+        d.start();
+
+        w.start();
+
+        sc.close();
+    }
+}
+
+
+Q2
+
+AsyncDemoApplication.java
+
+
+package com.example.asyncdemo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+@SpringBootApplication
+@EnableAsync
+public class AsyncDemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(AsyncDemoApplication.class, args);
+    }
+}
+
+
+AsyncService.java
+
+package com.example.asyncdemo;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AsyncService {
+
+    @Async
+    public void processTask() {
+
+        System.out.println("Task Started: " + Thread.currentThread().getName());
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Task Completed: " + Thread.currentThread().getName());
+    }
+}
+
+AsyncController.java
+
+package com.example.asyncdemo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class AsyncController {
+
+    @Autowired
+    private AsyncService asyncService;
+
+    @GetMapping("/start")
+    public String startTask() {
+
+        asyncService.processTask();
+
+        return "Async Task Started...";
+    }
+}

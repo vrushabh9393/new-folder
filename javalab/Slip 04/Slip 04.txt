@@ -1,0 +1,364 @@
+Slip 04
+Develop a Java application to manage student records using object-oriented principles. The system should support student registration, updating details, calculating grades, and displaying student information.
+OR
+Develop a Java application that connects to a MySQL database to manage student information. Implement CRUD operations for student records using JDBC. Use prepared statements to handle SQL queries securely and ensure proper transaction management.
+
+
+
+Q1
+
+
+import java.util.Scanner;
+
+// Student Class
+class StudentRecord {
+
+    int rollNo;
+    String studentName;
+    double marks;
+    char grade;
+
+    // Method for Student Registration
+    void registerStudent() {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Roll Number: ");
+        rollNo = sc.nextInt();
+
+        sc.nextLine();
+
+        System.out.print("Enter Student Name: ");
+        studentName = sc.nextLine();
+
+        System.out.print("Enter Marks: ");
+        marks = sc.nextDouble();
+    }
+
+    // Method to Update Details
+    void updateDetails() {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("\nUpdate Student Details");
+
+        System.out.print("Enter New Name: ");
+        studentName = sc.nextLine();
+
+        System.out.print("Enter New Marks: ");
+        marks = sc.nextDouble();
+    }
+
+    // Method to Calculate Grade
+    void calculateGrade() {
+
+        if (marks >= 80)
+            grade = 'A';
+
+        else if (marks >= 60)
+            grade = 'B';
+
+        else if (marks >= 40)
+            grade = 'C';
+
+        else
+            grade = 'F';
+    }
+
+    // Method to Display Student Information
+    void displayStudent() {
+
+        calculateGrade();
+
+        System.out.println("\n===== Student Information =====");
+
+        System.out.println("Roll Number  : " + rollNo);
+        System.out.println("Student Name : " + studentName);
+        System.out.println("Marks        : " + marks);
+        System.out.println("Grade        : " + grade);
+    }
+}
+
+// Main Class
+public class Slip04 {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        StudentRecord s = new StudentRecord();
+
+        int choice;
+
+        do {
+
+            System.out.println("\n===== Student Record System =====");
+
+            System.out.println("1. Register Student");
+            System.out.println("2. Update Student Details");
+            System.out.println("3. Display Student Information");
+            System.out.println("4. Exit");
+
+            System.out.print("Enter Choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+
+                case 1:
+                    s.registerStudent();
+                    break;
+
+                case 2:
+                    s.updateDetails();
+                    break;
+
+                case 3:
+                    s.displayStudent();
+                    break;
+
+                case 4:
+                    System.out.println("Program Ended...");
+                    break;
+
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+
+        } while (choice != 4);
+    }
+}
+
+Q2
+Q2
+
+package com.student;
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class studentApp {
+
+    // Database Details
+    static final String URL = "jdbc:mysql://localhost:3306/college";
+    static final String USER = "root";
+    static final String PASSWORD = "ekdeep@22";
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            // Load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Create Connection
+            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            // Transaction Management
+            conn.setAutoCommit(false);
+
+            while (true) {
+
+                System.out.println("\n===== Student Management System =====");
+                System.out.println("1. Add Student");
+                System.out.println("2. View Students");
+                System.out.println("3. Update Student");
+                System.out.println("4. Delete Student");
+                System.out.println("5. Exit");
+
+                System.out.print("Enter Choice: ");
+                int choice = sc.nextInt();
+
+                switch (choice) {
+
+                    case 1:
+                        addStudent(conn, sc);
+                        break;
+
+                    case 2:
+                        viewStudents(conn);
+                        break;
+
+                    case 3:
+                        updateStudent(conn, sc);
+                        break;
+
+                    case 4:
+                        deleteStudent(conn, sc);
+                        break;
+
+                    case 5:
+                        conn.close();
+                        System.out.println("Application Closed!");
+                        return;
+
+                    default:
+                        System.out.println("Invalid Choice!");
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    // ADD STUDENT
+    public static void addStudent(Connection conn, Scanner sc) {
+
+        try {
+
+            String sql = "INSERT INTO student(name, age, course) VALUES (?, ?, ?)";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            System.out.print("Enter Student Name: ");
+            sc.nextLine();
+            String name = sc.nextLine();
+
+            System.out.print("Enter Age: ");
+            int age = sc.nextInt();
+
+            System.out.print("Enter Course: ");
+            sc.nextLine();
+            String course = sc.nextLine();
+
+            ps.setString(1, name);
+            ps.setInt(2, age);
+            ps.setString(3, course);
+
+            int rows = ps.executeUpdate();
+
+            conn.commit();
+
+            if (rows > 0)
+                System.out.println("Student Added Successfully!");
+
+        } catch (Exception e) {
+
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    // VIEW STUDENTS
+    public static void viewStudents(Connection conn) {
+
+        try {
+
+            String sql = "SELECT * FROM student";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            System.out.println("\n--- Student Records ---");
+
+            while (rs.next()) {
+
+                System.out.println(
+                        rs.getInt("id") + " | " +
+                                rs.getString("name") + " | " +
+                                rs.getInt("age") + " | " +
+                                rs.getString("course"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    // UPDATE STUDENT
+    public static void updateStudent(Connection conn, Scanner sc) {
+
+        try {
+
+            String sql = "UPDATE student SET course=? WHERE id=?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            System.out.print("Enter Student ID: ");
+            int id = sc.nextInt();
+
+            System.out.print("Enter New Course: ");
+            sc.nextLine();
+            String course = sc.nextLine();
+
+            ps.setString(1, course);
+            ps.setInt(2, id);
+
+            int rows = ps.executeUpdate();
+
+            conn.commit();
+
+            if (rows > 0)
+                System.out.println("Student Updated Successfully!");
+            else
+                System.out.println("Student Not Found!");
+
+        } catch (Exception e) {
+
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    // DELETE STUDENT
+    public static void deleteStudent(Connection conn, Scanner sc) {
+
+        try {
+
+            String sql = "DELETE FROM student WHERE id=?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            System.out.print("Enter Student ID: ");
+            int id = sc.nextInt();
+
+            ps.setInt(1, id);
+
+            int rows = ps.executeUpdate();
+
+            conn.commit();
+
+            if (rows > 0)
+                System.out.println("Student Deleted Successfully!");
+            else
+                System.out.println("Student Not Found!");
+
+        } catch (Exception e) {
+
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+
+
+
+MySQL Table
+
+CREATE DATABASE college;
+
+USE college;
+
+CREATE TABLE student (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50),
+    age INT,
+    course VARCHAR(50)
+);

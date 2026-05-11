@@ -1,0 +1,81 @@
+Slip 11
+Implement a Java Program to create calculator using AWT
+OR
+Write a program to implement student information in a fi le and perform the fi le operations on it.
+
+
+Q1
+
+
+
+
+
+
+
+
+Q2
+import java.io.*;
+import java.util.Scanner;
+
+public class StudentFile {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            // Create File
+            FileWriter fw =
+                    new FileWriter("student.txt");
+
+            // User Input
+            System.out.println("Enter Student Roll No:");
+            int rollNo = sc.nextInt();
+
+            sc.nextLine();
+
+            System.out.println("Enter Student Name:");
+            String name = sc.nextLine();
+
+            System.out.println("Enter Student Marks:");
+            double marks = sc.nextDouble();
+
+            // Write Data into File
+            fw.write("Roll No: " + rollNo + "\n");
+
+            fw.write("Name: " + name + "\n");
+
+            fw.write("Marks: " + marks + "\n");
+
+            fw.close();
+
+            System.out.println("\nStudent Information Saved Successfully");
+
+            // Read File
+            FileReader fr =
+                    new FileReader("student.txt");
+
+            BufferedReader br =
+                    new BufferedReader(fr);
+
+            String line;
+
+            System.out.println("\nStudent Information from File:\n");
+
+            while ((line = br.readLine()) != null) {
+
+                System.out.println(line);
+            }
+
+            br.close();
+            fr.close();
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+
+        sc.close();
+    }
+}

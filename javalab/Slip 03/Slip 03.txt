@@ -1,0 +1,192 @@
+Slip 03
+Create a Java program to manage employee payroll using OOP concepts. Include functionalities such as employee creation, salary calculation, bonus allocation, and payslip generation. Use inheritance for diff erent employee types (e.g., full-time, part-time).
+OR
+Write a program to design an admission enquiry for MCA student form using Swing.
+
+
+Q1
+
+
+import java.util.Scanner;
+
+// Base Class
+class StaffMember {
+
+    int staffId;
+    String staffName;
+
+    // Constructor
+    StaffMember(int id, String name) {
+        staffId = id;
+        staffName = name;
+    }
+
+    double calculateSalary() {
+        return 0;
+    }
+
+    double calculateBonus() {
+        return 0;
+    }
+
+    // Display Payslip
+    void generatePayslip() {
+
+        System.out.println("\n========== PAYSLIP ==========");
+        System.out.println("Employee ID   : " + staffId);
+        System.out.println("Employee Name : " + staffName);
+        System.out.println("Salary        : " + calculateSalary());
+        System.out.println("Bonus         : " + calculateBonus());
+        System.out.println("Total Salary  : "
+                + (calculateSalary() + calculateBonus()));
+    }
+}
+
+// Full Time Employee Class
+class PermanentEmployee extends StaffMember {
+
+    double monthlySalary;
+
+    PermanentEmployee(int id, String name, double salary) {
+
+        super(id, name);
+        monthlySalary = salary;
+    }
+
+    // Salary Calculation
+    double calculateSalary() {
+        return monthlySalary;
+    }
+
+    // Bonus Calculation
+    double calculateBonus() {
+        return monthlySalary * 0.10;
+    }
+}
+
+// Part Time Employee Class
+class TemporaryEmployee extends StaffMember {
+
+    int hoursWorked;
+    double ratePerHour;
+
+    TemporaryEmployee(int id, String name,
+                      int hours, double rate) {
+
+        super(id, name);
+
+        hoursWorked = hours;
+        ratePerHour = rate;
+    }
+
+    // Salary Calculation
+    double calculateSalary() {
+        return hoursWorked * ratePerHour;
+    }
+
+    // Bonus Calculation
+    double calculateBonus() {
+        return calculateSalary() * 0.05;
+    }
+}
+
+// Main Class
+public class PayrollSystem {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("1. Full Time Employee");
+        System.out.println("2. Part Time Employee");
+
+        System.out.print("Enter Choice: ");
+        int choice = sc.nextInt();
+
+        System.out.print("Enter Employee ID: ");
+        int id = sc.nextInt();
+
+        sc.nextLine();
+
+        System.out.print("Enter Employee Name: ");
+        String name = sc.nextLine();
+
+        StaffMember emp;
+
+        if (choice == 1) {
+
+            System.out.print("Enter Monthly Salary: ");
+            double salary = sc.nextDouble();
+
+            emp = new PermanentEmployee(id, name, salary);
+
+        } else {
+
+            System.out.print("Enter Hours Worked: ");
+            int hours = sc.nextInt();
+
+            System.out.print("Enter Rate Per Hour: ");
+            double rate = sc.nextDouble();
+
+            emp = new TemporaryEmployee(id, name, hours, rate);
+        }
+
+        // Generate Payslip
+        emp.generatePayslip();
+    }
+}
+
+Q2
+
+import javax.swing.*;
+import java.awt.event.*;
+import java.io.*;
+
+public class AdmissionForm extends JFrame implements ActionListener {
+    JTextField nameField;
+    JComboBox<String> courseBox;
+    JButton submitBtn;
+
+    public AdmissionForm() {
+        setTitle("Admission Enquiry Form");
+        setSize(400, 400);
+        setLayout(null);
+
+        JLabel nameLabel = new JLabel("Name:");
+        nameLabel.setBounds(30, 30, 100, 25);
+        add(nameLabel);
+
+        nameField = new JTextField();
+        nameField.setBounds(150, 30, 180, 25);
+        add(nameField);
+
+        String[] courses = {"MCA", "BCA", "BSc", "BCom"};
+        courseBox = new JComboBox<>(courses);
+        courseBox.setBounds(150, 110, 180, 25);
+        add(courseBox);
+
+        submitBtn = new JButton("Submit");
+        submitBtn.setBounds(80, 280, 100, 30);
+        submitBtn.addActionListener(this);
+        add(submitBtn);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == submitBtn) {
+            String name = nameField.getText();
+            String course = (String) courseBox.getSelectedItem();
+            try (FileWriter fw = new FileWriter("enquiry.txt", true)) {
+                fw.write(name + "," + course + "\n");
+                JOptionPane.showMessageDialog(this, "Form Submitted Successfully!");
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Error saving data!");
+            }
+        }
+    }
+    public static void main(String[] args) { new AdmissionForm(); }
+}
+
+

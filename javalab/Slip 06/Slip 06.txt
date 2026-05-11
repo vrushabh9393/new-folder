@@ -1,0 +1,293 @@
+Slip 06
+Create a Java program to model an academic institution using OOP concepts like inheritance, encapsulation, and polymorphism. Defi ne a class hierarchy as follows: Staff → Professor → Head of Department (HOD).
+A. Staff : Store and display staff name, date of joining, and staff ID.
+B. Professor: Inherit all Staff details and additionally display subject specialization and salary.
+C. HOD: Inherit all Professor details and additionally display department allowance (if applicable).
+OR
+Write a program of servlet to demonstrate GET and POST Methods with suitable example using simulation.
+
+
+Q1
+
+class Staff {
+
+    // Encapsulation
+    private String name;
+    private String dateOfJoining;
+    private int staffId;
+
+    // Constructor
+    Staff(String name, String dateOfJoining, int staffId) {
+
+        this.name = name;
+        this.dateOfJoining = dateOfJoining;
+        this.staffId = staffId;
+    }
+
+    // Display Method
+    void display() {
+
+        System.out.println("Staff Name: " + name);
+        System.out.println("Date of Joining: " + dateOfJoining);
+        System.out.println("Staff ID: " + staffId);
+    }
+}
+
+// Professor Class
+class Professor extends Staff {
+
+    private String specialization;
+    private double salary;
+
+    Professor(String name, String dateOfJoining, int staffId,
+              String specialization, double salary) {
+
+        super(name, dateOfJoining, staffId);
+
+        this.specialization = specialization;
+        this.salary = salary;
+    }
+
+    // Polymorphism (Method Overriding)
+    @Override
+    void display() {
+
+        super.display();
+
+        System.out.println("Subject Specialization: " + specialization);
+        System.out.println("Salary: " + salary);
+    }
+}
+
+// HOD Class
+class HOD extends Professor {
+
+    private double departmentAllowance;
+
+    HOD(String name, String dateOfJoining, int staffId,
+        String specialization, double salary,
+        double departmentAllowance) {
+
+        super(name, dateOfJoining, staffId,
+                specialization, salary);
+
+        this.departmentAllowance = departmentAllowance;
+    }
+
+    // Method Overriding
+    @Override
+    void display() {
+
+        super.display();
+
+        System.out.println("Department Allowance: "
+                + departmentAllowance);
+    }
+}
+
+// Main Class
+public class InstitutionManagement {
+
+    public static void main(String[] args) {
+
+        Staff s1 = new Staff(
+                "Rahul",
+                "10-01-2020",
+                101);
+
+        Professor p1 = new Professor(
+                "Isha",
+                "15-06-2019",
+                102,
+                "Java",
+                50000);
+
+        HOD h1 = new HOD(
+                "Priya",
+                "20-03-2015",
+                103,
+                "Database",
+                80000,
+                10000);
+
+        System.out.println("\n----- Staff Details -----");
+        s1.display();
+
+        System.out.println("\n----- Professor Details -----");
+        p1.display();
+
+        System.out.println("\n----- HOD Details -----");
+        h1.display();
+    }
+}
+
+jar sir bole user kadun data je tar 
+import java.util.Scanner;
+
+// Staff Class
+class Staff {
+
+    // Encapsulation
+    private String name;
+    private String dateOfJoining;
+    private int staffId;
+
+    // Constructor
+    Staff(String name, String dateOfJoining, int staffId) {
+
+        this.name = name;
+        this.dateOfJoining = dateOfJoining;
+        this.staffId = staffId;
+    }
+
+    // Display Method
+    void display() {
+
+        System.out.println("Staff Name: " + name);
+        System.out.println("Date of Joining: " + dateOfJoining);
+        System.out.println("Staff ID: " + staffId);
+    }
+}
+
+// Professor Class
+class Professor extends Staff {
+
+    private String specialization;
+    private double salary;
+
+    Professor(String name, String dateOfJoining, int staffId,
+              String specialization, double salary) {
+
+        super(name, dateOfJoining, staffId);
+
+        this.specialization = specialization;
+        this.salary = salary;
+    }
+
+    // Method Overriding
+    @Override
+    void display() {
+
+        super.display();
+
+        System.out.println("Subject Specialization: " + specialization);
+        System.out.println("Salary: " + salary);
+    }
+}
+
+// HOD Class
+class HOD extends Professor {
+
+    private double departmentAllowance;
+
+    HOD(String name, String dateOfJoining, int staffId,
+        String specialization, double salary,
+        double departmentAllowance) {
+
+        super(name, dateOfJoining, staffId,
+                specialization, salary);
+
+        this.departmentAllowance = departmentAllowance;
+    }
+
+    // Method Overriding
+    @Override
+    void display() {
+
+        super.display();
+
+        System.out.println("Department Allowance: "
+                + departmentAllowance);
+    }
+}
+
+// Main Class
+public class InstitutionManagement {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Staff Input
+        System.out.println("Enter Staff Details:");
+        System.out.print("Name: ");
+        String sName = sc.nextLine();
+
+        System.out.print("Date of Joining: ");
+        String sDoj = sc.nextLine();
+
+        System.out.print("Staff ID: ");
+        int sId = sc.nextInt();
+        sc.nextLine();
+
+        Staff s1 = new Staff(sName, sDoj, sId);
+
+        // Professor Input
+        System.out.println("\nEnter Professor Details:");
+        System.out.print("Name: ");
+        String pName = sc.nextLine();
+
+        System.out.print("Date of Joining: ");
+        String pDoj = sc.nextLine();
+
+        System.out.print("Staff ID: ");
+        int pId = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Specialization: ");
+        String spec = sc.nextLine();
+
+        System.out.print("Salary: ");
+        double sal = sc.nextDouble();
+        sc.nextLine();
+
+        Professor p1 = new Professor(
+                pName, pDoj, pId, spec, sal);
+
+        // HOD Input
+        System.out.println("\nEnter HOD Details:");
+        System.out.print("Name: ");
+        String hName = sc.nextLine();
+
+        System.out.print("Date of Joining: ");
+        String hDoj = sc.nextLine();
+
+        System.out.print("Staff ID: ");
+        int hId = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Specialization: ");
+        String hSpec = sc.nextLine();
+
+        System.out.print("Salary: ");
+        double hSal = sc.nextDouble();
+
+        System.out.print("Department Allowance: ");
+        double allowance = sc.nextDouble();
+
+        HOD h1 = new HOD(
+                hName, hDoj, hId,
+                hSpec, hSal, allowance);
+
+        // Output
+        System.out.println("\n----- Staff Details -----");
+        s1.display();
+
+        System.out.println("\n----- Professor Details -----");
+        p1.display();
+
+        System.out.println("\n----- HOD Details -----");
+        h1.display();
+
+        sc.close();
+    }
+}
+
+
+
+
+
+Q2
+
+
+

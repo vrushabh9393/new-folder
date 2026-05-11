@@ -1,0 +1,229 @@
+Slip 08
+Implement a Java program to manage bank accounts using object-oriented programming (OOP) concepts like classes, inheritance, encapsulation, and polymorphism. Include features like account creation, deposit, withdrawal, and balance inquiry.
+OR
+Write a program to demonstrate how the process tasks asynchronously in a Spring Boot application.
+
+
+Q1
+
+import java.util.Scanner;
+
+// Base Class
+class BankAccount {
+
+    // Encapsulation
+    private int accountNumber;
+    private String name;
+    protected double balance;
+
+    // Constructor
+    BankAccount(int accountNumber,
+                String name,
+                double balance) {
+
+        this.accountNumber = accountNumber;
+        this.name = name;
+        this.balance = balance;
+    }
+
+    // Deposit Method
+    void deposit(double amount) {
+
+        balance = balance + amount;
+
+        System.out.println("Amount Deposited: " + amount);
+    }
+
+    // Withdraw Method
+    void withdraw(double amount) {
+
+        if (balance >= amount) {
+
+            balance = balance - amount;
+
+            System.out.println("Amount Withdrawn: " + amount);
+
+        } else {
+
+            System.out.println("Insufficient Balance");
+        }
+    }
+
+    // Balance Inquiry
+    void displayBalance() {
+
+        System.out.println("Current Balance: " + balance);
+    }
+
+    // Display Account Details
+    void displayAccount() {
+
+        System.out.println("\nAccount Number: " + accountNumber);
+        System.out.println("Account Holder Name: " + name);
+
+        displayBalance();
+    }
+}
+
+// Savings Account
+class SavingsAccount extends BankAccount {
+
+    SavingsAccount(int accountNumber,
+                   String name,
+                   double balance) {
+
+        super(accountNumber, name, balance);
+    }
+
+    // Polymorphism
+    @Override
+    void withdraw(double amount) {
+
+        if (balance - amount >= 500) {
+
+            balance = balance - amount;
+
+            System.out.println("Withdrawn from Savings: " + amount);
+
+        } else {
+
+            System.out.println("Minimum Balance Required");
+        }
+    }
+}
+
+// Current Account
+class CurrentAccount extends BankAccount {
+
+    CurrentAccount(int accountNumber,
+                   String name,
+                   double balance) {
+
+        super(accountNumber, name, balance);
+    }
+
+    @Override
+    void withdraw(double amount) {
+
+        balance = balance - amount;
+
+        System.out.println("Withdrawn from Current: " + amount);
+    }
+}
+
+// Main Class
+public class BankManagement {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Input Details
+        System.out.println("Enter Account Number:");
+        int accNo = sc.nextInt();
+
+        sc.nextLine();
+
+        System.out.println("Enter Account Holder Name:");
+        String name = sc.nextLine();
+
+        System.out.println("Enter Initial Balance:");
+        double balance = sc.nextDouble();
+
+        // Create Savings Account
+        SavingsAccount s1 =
+                new SavingsAccount(accNo,
+                        name,
+                        balance);
+
+        // Display Details
+        s1.displayAccount();
+
+        // Deposit
+        System.out.println("\nEnter Deposit Amount:");
+        double depositAmount = sc.nextDouble();
+
+        s1.deposit(depositAmount);
+
+        s1.displayBalance();
+
+        // Withdraw
+        System.out.println("\nEnter Withdraw Amount:");
+        double withdrawAmount = sc.nextDouble();
+
+        s1.withdraw(withdrawAmount);
+
+        s1.displayBalance();
+
+        sc.close();
+    }
+}
+
+Q2
+
+AsyncDemoApplication.java
+
+
+package com.example.asyncdemo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+@SpringBootApplication
+@EnableAsync
+public class AsyncDemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(AsyncDemoApplication.class, args);
+    }
+}
+
+
+AsyncService.java
+
+package com.example.asyncdemo;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AsyncService {
+
+    @Async
+    public void processTask() {
+
+        System.out.println("Task Started: " + Thread.currentThread().getName());
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Task Completed: " + Thread.currentThread().getName());
+    }
+}
+
+AsyncController.java
+
+package com.example.asyncdemo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class AsyncController {
+
+    @Autowired
+    private AsyncService asyncService;
+
+    @GetMapping("/start")
+    public String startTask() {
+
+        asyncService.processTask();
+
+        return "Async Task Started...";
+    }
+}

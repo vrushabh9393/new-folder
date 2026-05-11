@@ -1,0 +1,241 @@
+Slip 10
+Implement a Java program to manage retail staff using OOP concepts. Defi ne a hierarchy: Worker → Supervisor → StoreManager.
+A. Worker: Store and display worker name, ID, and date of birth.
+B. Supervisor: Inherit Worker details and additionally include monthly salary.
+C. StoreManager: Inherit Supervisor details and additionally include profi t-based incentives or commission (if applicable).
+OR
+Write a client-server program using TCP sockets to echo the message sent by the client.
+
+
+
+Q1
+ 
+import java.util.Scanner;
+
+// Worker Class
+class Worker {
+
+    String name;
+    int id;
+    String dob;
+
+    // Constructor
+    Worker(String name, int id, String dob) {
+
+        this.name = name;
+        this.id = id;
+        this.dob = dob;
+    }
+
+    // Display Worker Details
+    void displayWorker() {
+
+        System.out.println("\nWorker Name: " + name);
+        System.out.println("Worker ID: " + id);
+        System.out.println("Date of Birth: " + dob);
+    }
+}
+
+// Supervisor Class
+class Supervisor extends Worker {
+
+    double salary;
+
+    // Constructor
+    Supervisor(String name,
+               int id,
+               String dob,
+               double salary) {
+
+        super(name, id, dob);
+
+        this.salary = salary;
+    }
+
+    // Display Supervisor Details
+    void displaySupervisor() {
+
+        displayWorker();
+
+        System.out.println("Monthly Salary: " + salary);
+    }
+}
+
+// Store Manager Class
+class StoreManager extends Supervisor {
+
+    double incentive;
+
+    // Constructor
+    StoreManager(String name,
+                 int id,
+                 String dob,
+                 double salary,
+                 double incentive) {
+
+        super(name, id, dob, salary);
+
+        this.incentive = incentive;
+    }
+
+    // Display Store Manager Details
+    void displayManager() {
+
+        displaySupervisor();
+
+        System.out.println("Profit Incentive: " + incentive);
+    }
+}
+
+// Main Class
+public class RetailManagement {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // User Input
+        System.out.println("Enter Worker Name:");
+        String name = sc.nextLine();
+
+        System.out.println("Enter Worker ID:");
+        int id = sc.nextInt();
+
+        sc.nextLine();
+
+        System.out.println("Enter Date of Birth:");
+        String dob = sc.nextLine();
+
+        System.out.println("Enter Monthly Salary:");
+        double salary = sc.nextDouble();
+
+        System.out.println("Enter Incentive:");
+        double incentive = sc.nextDouble();
+
+        // Create Store Manager Object
+        StoreManager s1 =
+                new StoreManager(name,
+                        id,
+                        dob,
+                        salary,
+                        incentive);
+
+        // Display Details
+        System.out.println("\n----- Store Manager Details -----");
+
+        s1.displayManager();
+
+        sc.close();
+    }
+}
+
+
+
+Q2
+
+
+Server Program
+
+
+import java.io.*;
+import java.net.*;
+
+public class Server {
+
+    public static void main(String[] args) {
+
+        try {
+
+            // Create Server Socket
+            ServerSocket ss = new ServerSocket(5000);
+
+            System.out.println("Server Waiting for Connection...");
+
+            // Accept Client Connection
+            Socket s = ss.accept();
+
+            System.out.println("Client Connected");
+
+            // Input and Output Streams
+            DataInputStream dis =
+                    new DataInputStream(s.getInputStream());
+
+            DataOutputStream dos =
+                    new DataOutputStream(s.getOutputStream());
+
+            // Receive Message
+            String msg = dis.readUTF();
+
+            System.out.println("Message from Client: " + msg);
+
+            // Echo Message Back
+            dos.writeUTF("Echo: " + msg);
+
+            // Close Connections
+            dis.close();
+            dos.close();
+            s.close();
+            ss.close();
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+    }
+}
+
+
+Client Program
+
+
+
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+
+public class Client {
+
+    public static void main(String[] args) {
+
+        try {
+
+            // Connect to Server
+            Socket s = new Socket("localhost", 5000);
+
+            // Input and Output Streams
+            DataInputStream dis =
+                    new DataInputStream(s.getInputStream());
+
+            DataOutputStream dos =
+                    new DataOutputStream(s.getOutputStream());
+
+            Scanner sc = new Scanner(System.in);
+
+            // Send Message
+            System.out.println("Enter Message:");
+
+            String msg = sc.nextLine();
+
+            dos.writeUTF(msg);
+
+            // Receive Echo Message
+            String response = dis.readUTF();
+
+            System.out.println("Message from Server: "
+                    + response);
+
+            // Close Connections
+            dis.close();
+            dos.close();
+            s.close();
+            sc.close();
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+    }
+}
+
+
+

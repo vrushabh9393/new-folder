@@ -1,0 +1,168 @@
+Slip 02
+Create a hierarchy of Employee, Manager, Sales Manager, they should have the following functionality:
+A. Employee: Display name, date of birth and id of Employee.
+B. Manager: Display all above information with salary drawn.
+C. Sales Manager: Display all above information and commission if applicable.
+OR
+Write a program to demonstrate how the process tasks asynchronously in a Spring Boot application.
+
+
+Q1
+
+import java.util.Scanner;
+
+// Base Class
+class Emp {
+    int empId;
+    String empName;
+    String dob;
+
+    void acceptEmployee() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Employee ID: ");
+        empId = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Employee Name: ");
+        empName = sc.nextLine();
+
+        System.out.print("Enter Date of Birth: ");
+        dob = sc.nextLine();
+    }
+
+    void displayEmployee() {
+        System.out.println("\nEmployee Details");
+        System.out.println("-------------------------");
+        System.out.println("Employee ID   : " + empId);
+        System.out.println("Employee Name : " + empName);
+        System.out.println("Date of Birth : " + dob);
+    }
+}
+
+// Derived Class
+class Manager extends Emp {
+    double salary;
+
+    void acceptManager() {
+        acceptEmployee();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Salary: ");
+        salary = sc.nextDouble();
+    }
+
+    void displayManager() {
+        displayEmployee();
+        System.out.println("Salary        : " + salary);
+    }
+}
+
+// Derived Class
+class SalesManager extends Manager {
+    double commission;
+
+    void acceptSalesManager() {
+        acceptManager();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Commission: ");
+        commission = sc.nextDouble();
+    }
+
+    void displaySalesManager() {
+        displayManager();
+        System.out.println("Commission    : " + commission);
+    }
+}
+
+// Main Class
+public class slip02 {
+    public static void main(String[] args) {
+
+        SalesManager sm = new SalesManager();
+
+        System.out.println("Enter Sales Manager Information");
+        System.out.println("--------------------------------");
+
+        sm.acceptSalesManager();
+
+        System.out.println("\n===== Sales Manager Details =====");
+        sm.displaySalesManager();
+    }
+}
+
+
+
+Q2
+
+
+AsyncDemoApplication.java
+
+
+package com.example.asyncdemo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+@SpringBootApplication
+@EnableAsync
+public class AsyncDemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(AsyncDemoApplication.class, args);
+    }
+}
+
+
+AsyncService.java
+
+package com.example.asyncdemo;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AsyncService {
+
+    @Async
+    public void processTask() {
+
+        System.out.println("Task Started: " + Thread.currentThread().getName());
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Task Completed: " + Thread.currentThread().getName());
+    }
+}
+
+AsyncController.java
+
+package com.example.asyncdemo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class AsyncController {
+
+    @Autowired
+    private AsyncService asyncService;
+
+    @GetMapping("/start")
+    public String startTask() {
+
+        asyncService.processTask();
+
+        return "Async Task Started...";
+    }
+}
+

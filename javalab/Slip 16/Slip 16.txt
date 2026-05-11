@@ -1,0 +1,170 @@
+Slip 16
+Create a hierarchy of Employee, Manager, Sales Manager, they should have the following functionality: a) Employee: Display name, date of birth and id of Employee. b) Manager: Display all above information with salary drawn. Sales Manager: Display all above information and commission if applicable.
+OR
+Write a program to implement patient information in a file and perform the file operations on it.
+
+
+Q1
+
+
+import java.util.Scanner;
+
+// Base Class
+class Emp {
+    int empId;
+    String empName;
+    String dob;
+
+    void acceptEmployee() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Employee ID: ");
+        empId = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Employee Name: ");
+        empName = sc.nextLine();
+
+        System.out.print("Enter Date of Birth: ");
+        dob = sc.nextLine();
+    }
+
+    void displayEmployee() {
+        System.out.println("\nEmployee Details");
+        System.out.println("-------------------------");
+        System.out.println("Employee ID   : " + empId);
+        System.out.println("Employee Name : " + empName);
+        System.out.println("Date of Birth : " + dob);
+    }
+}
+
+// Derived Class
+class Manager extends Emp {
+    double salary;
+
+    void acceptManager() {
+        acceptEmployee();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Salary: ");
+        salary = sc.nextDouble();
+    }
+
+    void displayManager() {
+        displayEmployee();
+        System.out.println("Salary        : " + salary);
+    }
+}
+
+// Derived Class
+class SalesManager extends Manager {
+    double commission;
+
+    void acceptSalesManager() {
+        acceptManager();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Commission: ");
+        commission = sc.nextDouble();
+    }
+
+    void displaySalesManager() {
+        displayManager();
+        System.out.println("Commission    : " + commission);
+    }
+}
+
+// Main Class
+public class slip02 {
+    public static void main(String[] args) {
+
+        SalesManager sm = new SalesManager();
+
+        System.out.println("Enter Sales Manager Information");
+        System.out.println("--------------------------------");
+
+        sm.acceptSalesManager();
+
+        System.out.println("\n===== Sales Manager Details =====");
+        sm.displaySalesManager();
+    }
+}
+
+
+
+Q2
+
+import java.io.*;
+import java.util.Scanner;
+
+public class PatientFile {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            // Create FileWriter
+            FileWriter fw =
+                    new FileWriter("patient.txt");
+
+            // User Input
+            System.out.println("Enter Patient ID:");
+            int id = sc.nextInt();
+
+            sc.nextLine();
+
+            System.out.println("Enter Patient Name:");
+            String name = sc.nextLine();
+
+            System.out.println("Enter Disease:");
+            String disease = sc.nextLine();
+
+            System.out.println("Enter Age:");
+            int age = sc.nextInt();
+
+            // Write Data into File
+            fw.write("Patient ID: " + id + "\n");
+
+            fw.write("Patient Name: " + name + "\n");
+
+            fw.write("Disease: " + disease + "\n");
+
+            fw.write("Age: " + age + "\n");
+
+            fw.close();
+
+            System.out.println(
+                    "\nPatient Information Saved Successfully");
+
+            // Read File
+            FileReader fr =
+                    new FileReader("patient.txt");
+
+            BufferedReader br =
+                    new BufferedReader(fr);
+
+            String line;
+
+            System.out.println(
+                    "\nPatient Information from File:\n");
+
+            while ((line = br.readLine()) != null) {
+
+                System.out.println(line);
+            }
+
+            br.close();
+            fr.close();
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+
+        sc.close();
+    }
+}

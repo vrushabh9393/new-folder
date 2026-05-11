@@ -1,0 +1,280 @@
+Slip 14
+Implement a Java Program for developing a word counter using AWT & Swing.
+OR
+Write a client-server program using TCP sockets to echo the message sent by the client.
+
+
+
+Q1
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+// Main Class
+public class WordCounter extends JFrame
+        implements ActionListener {
+
+    // Components
+    JTextArea ta;
+
+    JButton b1;
+
+    JLabel l1;
+
+    // Constructor
+    WordCounter() {
+
+        // Text Area
+        ta = new JTextArea();
+
+        ta.setBounds(50, 50, 300, 150);
+
+        // Button
+        b1 = new JButton("Count Words");
+
+        b1.setBounds(120, 220, 150, 40);
+
+        // Label
+        l1 = new JLabel("Word Count: 0");
+
+        l1.setBounds(120, 280, 200, 30);
+
+        // Add Components
+        add(ta);
+
+        add(b1);
+
+        add(l1);
+
+        // Action Listener
+        b1.addActionListener(this);
+
+        // Frame Settings
+        setTitle("Word Counter");
+
+        setSize(450, 400);
+
+        setLayout(null);
+
+        setVisible(true);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    // Button Action
+    public void actionPerformed(ActionEvent e) {
+
+        String text = ta.getText();
+
+        // Check Empty Text
+        if (text.trim().isEmpty()) {
+
+            l1.setText("Word Count: 0");
+
+        } else {
+
+            // Split Words
+            String words[] = text.trim().split("\\s+");
+
+            int count = words.length;
+
+            l1.setText("Word Count: " + count);
+        }
+    }
+
+    // Main Method
+    public static void main(String[] args) {
+
+        new WordCounter();
+    }
+}
+
+
+
+ jar lettersangitle tar
+
+
+import javax.swing.*;
+import java.awt.event.*;
+
+// Main Class
+public class LetterCounter extends JFrame
+        implements ActionListener {
+
+    // Components
+    JTextArea ta;
+
+    JButton b1;
+
+    JLabel l1;
+
+    // Constructor
+    LetterCounter() {
+
+        // Text Area
+        ta = new JTextArea();
+
+        ta.setBounds(50, 50, 300, 150);
+
+        // Button
+        b1 = new JButton("Count Letters");
+
+        b1.setBounds(120, 220, 150, 40);
+
+        // Label
+        l1 = new JLabel("Letter Count: 0");
+
+        l1.setBounds(120, 280, 200, 30);
+
+        // Add Components
+        add(ta);
+
+        add(b1);
+
+        add(l1);
+
+        // Action Listener
+        b1.addActionListener(this);
+
+        // Frame Settings
+        setTitle("Letter Counter");
+
+        setSize(450, 400);
+
+        setLayout(null);
+
+        setVisible(true);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    // Button Action
+    public void actionPerformed(ActionEvent e) {
+
+        String text = ta.getText();
+
+        // Remove Spaces
+        text = text.replace(" ", "");
+
+        // Count Letters
+        int count = text.length();
+
+        // Display Result
+        l1.setText("Letter Count: " + count);
+    }
+
+    // Main Method
+    public static void main(String[] args) {
+
+        new LetterCounter();
+    }
+}
+
+
+Q2
+
+
+
+Server Program
+
+
+import java.io.*;
+import java.net.*;
+
+public class Server {
+
+    public static void main(String[] args) {
+
+        try {
+
+            // Create Server Socket
+            ServerSocket ss = new ServerSocket(5000);
+
+            System.out.println("Server Waiting for Connection...");
+
+            // Accept Client Connection
+            Socket s = ss.accept();
+
+            System.out.println("Client Connected");
+
+            // Input and Output Streams
+            DataInputStream dis =
+                    new DataInputStream(s.getInputStream());
+
+            DataOutputStream dos =
+                    new DataOutputStream(s.getOutputStream());
+
+            // Receive Message
+            String msg = dis.readUTF();
+
+            System.out.println("Message from Client: " + msg);
+
+            // Echo Message Back
+            dos.writeUTF("Echo: " + msg);
+
+            // Close Connections
+            dis.close();
+            dos.close();
+            s.close();
+            ss.close();
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+    }
+}
+
+
+Client Program
+
+
+
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+
+public class Client {
+
+    public static void main(String[] args) {
+
+        try {
+
+            // Connect to Server
+            Socket s = new Socket("localhost", 5000);
+
+            // Input and Output Streams
+            DataInputStream dis =
+                    new DataInputStream(s.getInputStream());
+
+            DataOutputStream dos =
+                    new DataOutputStream(s.getOutputStream());
+
+            Scanner sc = new Scanner(System.in);
+
+            // Send Message
+            System.out.println("Enter Message:");
+
+            String msg = sc.nextLine();
+
+            dos.writeUTF(msg);
+
+            // Receive Echo Message
+            String response = dis.readUTF();
+
+            System.out.println("Message from Server: "
+                    + response);
+
+            // Close Connections
+            dis.close();
+            dos.close();
+            s.close();
+            sc.close();
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+    }
+}

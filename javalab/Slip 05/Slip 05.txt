@@ -1,0 +1,367 @@
+Slip 05
+Write a program to accept roll no. Marks from users. Throw user defi ned exception Marks out of Bound if marks are 100.
+OR
+Implement a Java program to manage a library system using OOP concepts such as classes, inheritance, encapsulation, and polymorphism. Include features like adding books, issuing books, returning books, and checking availability.
+
+
+
+import java.util.Scanner;
+
+// User Defined Exception
+class MarksOutOfBoundException extends Exception {
+    MarksOutOfBoundException(String message) {
+        super(message);
+    }
+}
+
+public class MarksDemo {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            System.out.print("Enter Roll No: ");
+            int rollNo = sc.nextInt();
+
+            System.out.print("Enter Marks: ");
+            int marks = sc.nextInt();
+
+            // Check marks range
+            if (marks > 100 || marks < 0) {
+                throw new MarksOutOfBoundException("Marks Out of Bound");
+            }
+
+            System.out.println("Roll No: " + rollNo);
+            System.out.println("Marks: " + marks);
+
+        } catch (MarksOutOfBoundException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+        sc.close();
+    }
+}
+
+
+Q2
+
+import java.util.ArrayList;
+
+// Base Class
+class Book {
+
+    int bookId;
+    String title;
+    String author;
+    boolean isAvailable;
+
+    // Constructor
+    Book(int bookId, String title, String author) {
+
+        this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+        this.isAvailable = true;
+    }
+
+    // Display Book Details
+    void displayBook() {
+
+        System.out.println("\nBook ID: " + bookId);
+        System.out.println("Title: " + title);
+        System.out.println("Author: " + author);
+
+        if (isAvailable) {
+
+            System.out.println("Status: Available");
+
+        } else {
+
+            System.out.println("Status: Issued");
+        }
+    }
+}
+
+// Derived Class
+class Library extends Book {
+
+    Library(int bookId, String title, String author) {
+
+        super(bookId, title, author);
+    }
+
+    // Issue Book
+    void issueBook() {
+
+        if (isAvailable) {
+
+            isAvailable = false;
+
+            System.out.println(title + " Book Issued Successfully");
+
+        } else {
+
+            System.out.println(title + " Book is Already Issued");
+        }
+    }
+
+    // Return Book
+    void returnBook() {
+
+        if (!isAvailable) {
+
+            isAvailable = true;
+
+            System.out.println(title + " Book Returned Successfully");
+
+        } else {
+
+            System.out.println(title + " Book is Already Available");
+        }
+    }
+
+    // Check Availability
+    void checkAvailability() {
+
+        if (isAvailable) {
+
+            System.out.println(title + " Book is Available");
+
+        } else {
+
+            System.out.println(title + " Book is Not Available");
+        }
+    }
+}
+
+public class LibraryManagement {
+
+    public static void main(String[] args) {
+
+        ArrayList<Library> books = new ArrayList<>();
+
+        // Adding Books
+        Library b1 = new Library(101, "Java Programming", "James Gosling");
+
+        Library b2 = new Library(102, "Python Basics", "Guido van Rossum");
+
+        books.add(b1);
+        books.add(b2);
+
+        System.out.println("Books Added Successfully");
+
+        // Display Books
+        System.out.println("\nLibrary Books");
+
+        for (Library b : books) {
+
+            b.displayBook();
+        }
+
+        // Issue Book
+        System.out.println("\nIssue Book");
+
+        b1.issueBook();
+
+        // Check Availability
+        System.out.println("\nCheck Availability");
+
+        b1.checkAvailability();
+
+        // Return Book
+        System.out.println("\nReturn Book");
+
+        b1.returnBook();
+
+        // Check Availability Again
+        System.out.println("\nCheck Availability Again");
+
+        b1.checkAvailability();
+    }
+}
+  
+
+
+user data code 
+
+```java id="d3k91p"
+import java.util.ArrayList;
+import java.util.Scanner;
+
+// Base Class
+class Book {
+
+    // Encapsulation
+    private int bookId;
+    private String title;
+    private String author;
+    private boolean isAvailable;
+
+    // Constructor
+    Book(int bookId, String title, String author) {
+
+        this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+        this.isAvailable = true;
+    }
+
+    // Getter Methods
+    int getBookId() {
+        return bookId;
+    }
+
+    String getTitle() {
+        return title;
+    }
+
+    boolean isAvailable() {
+        return isAvailable;
+    }
+
+    // Issue Book
+    void issueBook() {
+
+        if (isAvailable) {
+
+            isAvailable = false;
+
+            System.out.println(title + " Book Issued Successfully");
+
+        } else {
+
+            System.out.println(title + " Book is Already Issued");
+        }
+    }
+
+    // Return Book
+    void returnBook() {
+
+        if (!isAvailable) {
+
+            isAvailable = true;
+
+            System.out.println(title + " Book Returned Successfully");
+
+        } else {
+
+            System.out.println(title + " Book is Already Available");
+        }
+    }
+
+    // Display Book Details
+    void displayBook() {
+
+        System.out.println("\nBook ID: " + bookId);
+        System.out.println("Title: " + title);
+        System.out.println("Author: " + author);
+
+        if (isAvailable) {
+
+            System.out.println("Status: Available");
+
+        } else {
+
+            System.out.println("Status: Issued");
+        }
+    }
+}
+
+// Derived Class
+class Library extends Book {
+
+    Library(int bookId, String title, String author) {
+
+        super(bookId, title, author);
+    }
+
+    // Polymorphism (Method Overriding)
+    @Override
+    void displayBook() {
+
+        super.displayBook();
+    }
+}
+
+public class LibraryManagement {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        ArrayList<Library> books = new ArrayList<>();
+
+        // Accept Number of Books
+        System.out.print("Enter Number of Books: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        // Adding Books
+        for (int i = 0; i < n; i++) {
+
+            System.out.println("\nEnter Book Details");
+
+            System.out.print("Enter Book ID: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter Title: ");
+            String title = sc.nextLine();
+
+            System.out.print("Enter Author Name: ");
+            String author = sc.nextLine();
+
+            Library b = new Library(id, title, author);
+
+            books.add(b);
+        }
+
+        System.out.println("\nBooks Added Successfully");
+
+        // Display Books
+        System.out.println("\nLibrary Books");
+
+        for (Library b : books) {
+
+            b.displayBook();
+        }
+
+        // Issue First Book
+        System.out.println("\nIssue Book");
+
+        books.get(0).issueBook();
+
+        // Check Availability
+        System.out.println("\nCheck Availability");
+
+        if (books.get(0).isAvailable()) {
+
+            System.out.println(books.get(0).getTitle() + " Book is Available");
+
+        } else {
+
+            System.out.println(books.get(0).getTitle() + " Book is Not Available");
+        }
+
+        // Return Book
+        System.out.println("\nReturn Book");
+
+        books.get(0).returnBook();
+
+        // Check Availability Again
+        System.out.println("\nCheck Availability Again");
+
+        if (books.get(0).isAvailable()) {
+
+            System.out.println(books.get(0).getTitle() + " Book is Available");
+
+        } else {
+
+            System.out.println(books.get(0).getTitle() + " Book is Not Available");
+        }
+
+        sc.close();
+    }
+}
+```
+

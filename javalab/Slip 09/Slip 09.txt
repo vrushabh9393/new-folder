@@ -1,0 +1,367 @@
+Slip 09
+Develop a Java-based library management application that demonstrates OOP principles and uses exception handling to handle cases like issuing books, returning books, etc.
+OR
+Write a client-server program using TCP sockets to echo the message sent by the client.
+
+
+Q1
+
+import java.util.Scanner;
+
+// Custom Exception
+class BookException extends Exception {
+
+    BookException(String message) {
+
+        super(message);
+    }
+}
+
+// Book Class
+class Book {
+
+    int bookId;
+    String title;
+    boolean isIssued;
+
+    // Constructor
+    Book(int bookId, String title) {
+
+        this.bookId = bookId;
+        this.title = title;
+        this.isIssued = false;
+    }
+
+    // Issue Book
+    void issueBook() throws BookException {
+
+        if (isIssued) {
+
+            throw new BookException("Book Already Issued");
+
+        } else {
+
+            isIssued = true;
+
+            System.out.println(title + " Book Issued Successfully");
+        }
+    }
+
+    // Return Book
+    void returnBook() throws BookException {
+
+        if (!isIssued) {
+
+            throw new BookException("Book is Not Issued");
+
+        } else {
+
+            isIssued = false;
+
+            System.out.println(title + " Book Returned Successfully");
+        }
+    }
+
+    // Display Book
+    void displayBook() {
+
+        System.out.println("\nBook ID: " + bookId);
+        System.out.println("Book Title: " + title);
+
+        if (isIssued) {
+
+            System.out.println("Status: Issued");
+
+        } else {
+
+            System.out.println("Status: Available");
+        }
+    }
+}
+
+// Main Class
+public class LibraryManagement {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Create Book
+        Book b1 = new Book(101, "Java Programming");
+
+        b1.displayBook();
+
+        try {
+
+            // Issue Book
+            System.out.println("\nIssuing Book");
+
+            b1.issueBook();
+
+            // Issue Again
+            System.out.println("\nIssuing Again");
+
+            b1.issueBook();
+
+        } catch (BookException e) {
+
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+        try {
+
+            // Return Book
+            System.out.println("\nReturning Book");
+
+            b1.returnBook();
+
+        } catch (BookException e) {
+
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+        b1.displayBook();
+
+        sc.close();
+    }
+}
+
+
+
+user karun deta sangitle tar 
+import java.util.Scanner;
+
+// Custom Exception
+class BookException extends Exception {
+
+    BookException(String message) {
+
+        super(message);
+    }
+}
+
+// Book Class
+class Book {
+
+    // Encapsulation
+    private int bookId;
+    private String title;
+    private boolean isIssued;
+
+    // Constructor
+    Book(int bookId, String title) {
+
+        this.bookId = bookId;
+        this.title = title;
+        this.isIssued = false;
+    }
+
+    // Issue Book
+    void issueBook() throws BookException {
+
+        if (isIssued) {
+
+            throw new BookException("Book Already Issued");
+
+        } else {
+
+            isIssued = true;
+
+            System.out.println(title + " Book Issued Successfully");
+        }
+    }
+
+    // Return Book
+    void returnBook() throws BookException {
+
+        if (!isIssued) {
+
+            throw new BookException("Book is Not Issued");
+
+        } else {
+
+            isIssued = false;
+
+            System.out.println(title + " Book Returned Successfully");
+        }
+    }
+
+    // Display Book Details
+    void displayBook() {
+
+        System.out.println("\nBook ID: " + bookId);
+        System.out.println("Book Title: " + title);
+
+        if (isIssued) {
+
+            System.out.println("Status: Issued");
+
+        } else {
+
+            System.out.println("Status: Available");
+        }
+    }
+}
+
+// Main Class
+public class LibraryManagement {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // User Input
+        System.out.println("Enter Book ID:");
+        int id = sc.nextInt();
+
+        sc.nextLine();
+
+        System.out.println("Enter Book Title:");
+        String title = sc.nextLine();
+
+        // Create Book Object
+        Book b1 = new Book(id, title);
+
+        // Display Book
+        b1.displayBook();
+
+        // Menu
+        System.out.println("\n1. Issue Book");
+        System.out.println("2. Return Book");
+
+        System.out.println("Enter Your Choice:");
+        int choice = sc.nextInt();
+
+        try {
+
+            if (choice == 1) {
+
+                b1.issueBook();
+
+            } else if (choice == 2) {
+
+                b1.returnBook();
+
+            } else {
+
+                System.out.println("Invalid Choice");
+            }
+
+        } catch (BookException e) {
+
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+        // Final Status
+        b1.displayBook();
+
+        sc.close();
+    }
+}
+
+
+
+
+
+Q2
+
+Server Program
+import java.io.*;
+import java.net.*;
+
+public class Server {
+
+    public static void main(String[] args) {
+
+        try {
+
+            // Create Server Socket
+            ServerSocket ss = new ServerSocket(5000);
+
+            System.out.println("Server Waiting for Connection...");
+
+            // Accept Client Connection
+            Socket s = ss.accept();
+
+            System.out.println("Client Connected");
+
+            // Input and Output Streams
+            DataInputStream dis =
+                    new DataInputStream(s.getInputStream());
+
+            DataOutputStream dos =
+                    new DataOutputStream(s.getOutputStream());
+
+            // Receive Message
+            String msg = dis.readUTF();
+
+            System.out.println("Message from Client: " + msg);
+
+            // Echo Message Back
+            dos.writeUTF("Echo: " + msg);
+
+            // Close Connections
+            dis.close();
+            dos.close();
+            s.close();
+            ss.close();
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+    }
+}
+
+
+Client Program
+
+
+
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+
+public class Client {
+
+    public static void main(String[] args) {
+
+        try {
+
+            // Connect to Server
+            Socket s = new Socket("localhost", 5000);
+
+            // Input and Output Streams
+            DataInputStream dis =
+                    new DataInputStream(s.getInputStream());
+
+            DataOutputStream dos =
+                    new DataOutputStream(s.getOutputStream());
+
+            Scanner sc = new Scanner(System.in);
+
+            // Send Message
+            System.out.println("Enter Message:");
+
+            String msg = sc.nextLine();
+
+            dos.writeUTF(msg);
+
+            // Receive Echo Message
+            String response = dis.readUTF();
+
+            System.out.println("Message from Server: "
+                    + response);
+
+            // Close Connections
+            dis.close();
+            dos.close();
+            s.close();
+            sc.close();
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+    }
+}
